@@ -32,6 +32,8 @@ const QrReader = ({ navigation }) => {
             <BarCodeScanner
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={StyleSheet.absoluteFillObject}
+                barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+                type={BarCodeScanner.Constants.Type.back}
             />
 
             {scanned && (
