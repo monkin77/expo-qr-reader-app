@@ -34,66 +34,71 @@ const Homepage = () => {
     };
 
     return (
-        <Box sx={{ width: "100%", height: "100%", padding: 3 }}>
-            <Typography variant="h4" color="white" sx={{ marginBottom: 3 }}>
-                Homepage
-            </Typography>
+        <Box sx={{ width: "100%", height: "100%" }}>
+            <Box sx={{ padding: 3 }}>
+                <Typography variant="h4" color="white" sx={{ marginBottom: 3 }}>
+                    Homepage
+                </Typography>
 
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
-                    {list.map((item, idx) => {
-                        return (
-                            <Grid item xs={12} key={idx}>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        width: "80%",
-                                        height: 80,
-                                        margin: 3,
-                                        padding: 1,
-                                        marginLeft: "auto",
-                                        marginRight: "auto",
-                                        backgroundColor: "#404040",
-                                        borderRadius: 3,
-                                    }}
-                                >
-                                    <Checkbox
-                                        style={{
-                                            borderRadius: 20,
-                                            height: 25,
-                                            width: 25,
-                                            color: "#34eb7a",
-                                        }}
-                                        checked={item.completed}
-                                        onChange={() => toggleTodo(idx)}
-                                    />
-
-                                    <div
-                                        onClick={navigateToQrReader}
-                                        style={{
+                <Box sx={{ flexGrow: 1 }}>
+                    <Grid container spacing={2}>
+                        {list.map((item, idx) => {
+                            return (
+                                <Grid item xs={12} key={idx}>
+                                    <Box
+                                        sx={{
                                             display: "flex",
-                                            flex: 1,
-                                            height: "100%",
+                                            flexDirection: "row",
                                             alignItems: "center",
+                                            width: "80%",
+                                            height: 70,
+                                            margin: 1,
+                                            paddingLeft: 3,
+                                            paddingRight: 3,
+                                            marginLeft: "auto",
+                                            marginRight: "auto",
+                                            backgroundColor: "#404040",
+                                            borderRadius: 3,
                                         }}
-                                        className={classes.todoTextContainer}
                                     >
-                                        <Typography
-                                            sx={{
-                                                color: "#fff",
-                                                marginLeft: 4,
+                                        <Checkbox
+                                            style={{
+                                                borderRadius: 20,
+                                                height: 25,
+                                                width: 25,
+                                                color: "#34eb7a",
                                             }}
+                                            checked={item.completed}
+                                            onChange={() => toggleTodo(idx)}
+                                        />
+
+                                        <div
+                                            onClick={navigateToQrReader}
+                                            style={{
+                                                display: "flex",
+                                                flex: 1,
+                                                height: "100%",
+                                                alignItems: "center",
+                                            }}
+                                            className={
+                                                classes.todoTextContainer
+                                            }
                                         >
-                                            {item.text}
-                                        </Typography>
-                                    </div>
-                                </Box>
-                            </Grid>
-                        );
-                    })}
-                </Grid>
+                                            <Typography
+                                                sx={{
+                                                    color: "#fff",
+                                                    marginLeft: 4,
+                                                }}
+                                            >
+                                                {item.text}
+                                            </Typography>
+                                        </div>
+                                    </Box>
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                </Box>
             </Box>
         </Box>
     );
