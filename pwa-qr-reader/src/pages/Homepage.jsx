@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Grid, Checkbox, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import classes from "./Homepage.css";
 
 class Todo {
     constructor(id, text, completed = false) {
@@ -48,7 +49,14 @@ const Homepage = () => {
                                         display: "flex",
                                         flexDirection: "row",
                                         alignItems: "center",
-                                        margin: 2,
+                                        width: "80%",
+                                        height: 80,
+                                        margin: 3,
+                                        padding: 1,
+                                        marginLeft: "auto",
+                                        marginRight: "auto",
+                                        backgroundColor: "#404040",
+                                        borderRadius: 3,
                                     }}
                                 >
                                     <Checkbox
@@ -68,14 +76,14 @@ const Homepage = () => {
                                             display: "flex",
                                             flex: 1,
                                             height: "100%",
+                                            alignItems: "center",
                                         }}
+                                        className={classes.todoTextContainer}
                                     >
                                         <Typography
                                             sx={{
                                                 color: "#fff",
                                                 marginLeft: 4,
-                                                height: "100%",
-                                                textAlignVertical: "center",
                                             }}
                                         >
                                             {item.text}
