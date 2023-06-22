@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Box, Grid, Checkbox, Typography } from "@mui/material";
 
 class Todo {
     constructor(id, text, completed = false) {
@@ -29,36 +30,61 @@ const Homepage = () => {
     };
 
     return (
-        <h1>Homepage</h1>
-        /* 
-        <View style={styles.container}>
-            {list.map((item, idx) => {
-                return (
-                    <View key={idx} style={styles.todoContainer}>
-                        <View style={styles.todoContent}>
-                            <Checkbox
-                                style={styles.checkbox}
-                                value={item.completed}
-                                onValueChange={() => toggleTodo(idx)}
-                                color="yellowgreen"
-                            />
+        <Box sx={{ width: "100%", height: "100%", padding: 3 }}>
+            <Typography variant="h4" color="white" sx={{ marginBottom: 3 }}>
+                Homepage
+            </Typography>
 
-                            <TouchableOpacity
-                                onPress={navigateToQrReader}
-                                style={{
-                                    flex: 1,
-                                    height: "100%",
-                                }}
-                            >
-                                <Text style={styles.itemText}>{item.text}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                );
-            })}
+            <Box sx={{ flexGrow: 1 }}>
+                <Grid container spacing={2}>
+                    {list.map((item, idx) => {
+                        return (
+                            <Grid item xs={12} key={idx}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        margin: 2,
+                                    }}
+                                >
+                                    <Checkbox
+                                        style={{
+                                            borderRadius: 20,
+                                            height: 25,
+                                            width: 25,
+                                            color: "#34eb7a",
+                                        }}
+                                        checked={item.completed}
+                                        onChange={() => toggleTodo(idx)}
+                                    />
 
-            <StatusBar style="auto" />
-        </View> */
+                                    <div
+                                        onClick={navigateToQrReader}
+                                        style={{
+                                            display: "flex",
+                                            flex: 1,
+                                            height: "100%",
+                                        }}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                color: "#fff",
+                                                marginLeft: 4,
+                                                height: "100%",
+                                                textAlignVertical: "center",
+                                            }}
+                                        >
+                                            {item.text}
+                                        </Typography>
+                                    </div>
+                                </Box>
+                            </Grid>
+                        );
+                    })}
+                </Grid>
+            </Box>
+        </Box>
     );
 };
 
