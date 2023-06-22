@@ -1,3 +1,4 @@
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { QrReader } from "react-qr-reader";
 
@@ -5,8 +6,20 @@ const QrReaderPage = () => {
     const [data, setData] = useState("No Result");
 
     return (
-        <>
-            <h1>QrReader</h1>
+        <Box>
+            <Box
+                sx={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    display: "flex",
+                    paddingTop: 3,
+                    paddingBottom: 3,
+                }}
+            >
+                <Typography variant="h4" color="white">
+                    QrReader
+                </Typography>
+            </Box>
 
             <QrReader
                 onResult={(result, error) => {
@@ -18,11 +31,28 @@ const QrReaderPage = () => {
                         console.info(error);
                     }
                 }}
-                style={{ width: "100%" }}
+                sx={{ width: "100%" }}
+                constraints={{ facingMode: "environment", aspectRatio: 1 }}
             />
 
-            <p>{data}</p>
-        </>
+            <Box
+                sx={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    display: "flex",
+                    paddingTop: 3,
+                    paddingBottom: 3,
+                }}
+            >
+                <Typography
+                    color="white"
+                    variant="body1"
+                    sx={{ textAlign: "center" }}
+                >
+                    {data}
+                </Typography>
+            </Box>
+        </Box>
     );
 };
 

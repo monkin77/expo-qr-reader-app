@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Box, Grid, Checkbox, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 class Todo {
     constructor(id, text, completed = false) {
@@ -20,13 +21,15 @@ const Homepage = () => {
         new Todo(3, "TODO 3", false),
     ]);
 
+    const navigate = useNavigate();
+
     const toggleTodo = (idx) => {
         list[idx].toggle();
         setList([...list]);
     };
 
     const navigateToQrReader = () => {
-        console.log("navigateToQrReader");
+        navigate("/qr-reader");
     };
 
     return (
