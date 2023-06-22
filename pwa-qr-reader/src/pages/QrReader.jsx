@@ -1,38 +1,29 @@
 import { useState } from "react";
+import { QrReader } from "react-qr-reader";
 
-const QrReader = () => {
+const QrReaderPage = () => {
+    const [data, setData] = useState("No Result");
+
     return (
-        <h1>QrReader</h1>
-        /* 
-        <View style={styles.container}>
-            {list.map((item, idx) => {
-                return (
-                    <View key={idx} style={styles.todoContainer}>
-                        <View style={styles.todoContent}>
-                            <Checkbox
-                                style={styles.checkbox}
-                                value={item.completed}
-                                onValueChange={() => toggleTodo(idx)}
-                                color="yellowgreen"
-                            />
+        <>
+            <h1>QrReader</h1>
 
-                            <TouchableOpacity
-                                onPress={navigateToQrReader}
-                                style={{
-                                    flex: 1,
-                                    height: "100%",
-                                }}
-                            >
-                                <Text style={styles.itemText}>{item.text}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                );
-            })}
+            <QrReader
+                onResult={(result, error) => {
+                    if (!!result) {
+                        setData(result?.text);
+                    }
 
-            <StatusBar style="auto" />
-        </View> */
+                    if (!!error) {
+                        console.info(error);
+                    }
+                }}
+                style={{ width: "100%" }}
+            />
+
+            <p>{data}</p>
+        </>
     );
 };
 
-export default QrReader;
+export default QrReaderPage;
