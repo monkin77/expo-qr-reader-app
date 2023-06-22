@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Grid, Checkbox, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import classes from "./Homepage.css";
+import classes from "./Homepage.module.css";
 
 class Todo {
     constructor(id, text, completed = false) {
