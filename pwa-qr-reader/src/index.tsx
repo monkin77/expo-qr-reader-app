@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  <React.StrictMode> {/* Strict Mode makes the app re-render more times in DEV mode to catch bad lifecycle handling  */}
     <App />
   </React.StrictMode>
 );

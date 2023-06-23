@@ -33,6 +33,7 @@ const QrReaderPage = () => {
                 aspectRatio={1}
                 disableFlip={false}
                 qrCodeSuccessCallback={onScanResult}
+                qrCodeErrorCallback={(err) => console.log("Errore " + err)}
             />
 
             {/* <QrReader
