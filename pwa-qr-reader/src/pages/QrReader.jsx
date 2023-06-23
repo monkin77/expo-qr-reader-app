@@ -4,11 +4,16 @@ import QrScannerPlugin from "../Components/QrScannerPlugin";
 
 const QrReaderPage = () => {
     const [data, setData] = useState("No Result");
+    const [hasPermission, setHasPermission] = useState(false);
 
     const onScanResult = (decodedText, decodedResult) => {
         // handle scanned result
         console.log(decodedText, decodedResult);
         setData(decodedText);
+    };
+
+    const onPermGranted = () => {
+        setHasPermission(true);
     };
 
     return (
@@ -33,7 +38,7 @@ const QrReaderPage = () => {
                 aspectRatio={1}
                 disableFlip={false}
                 qrCodeSuccessCallback={onScanResult}
-                qrCodeErrorCallback={(err) => console.log("Errore " + err)}
+                onPermGranted={onPermGranted}
             />
 
             {/* <QrReader
@@ -57,6 +62,8 @@ const QrReaderPage = () => {
                     display: "flex",
                     paddingTop: 3,
                     paddingBottom: 3,
+                    marginRight: 5,
+                    marginLeft: 5,
                 }}
             >
                 <Typography
@@ -64,7 +71,9 @@ const QrReaderPage = () => {
                     variant="body1"
                     sx={{ textAlign: "center" }}
                 >
-                    {data}
+                    {hasPermission
+                        ? data
+                        : "Please give permission to access the camera and refresh the page"}
                 </Typography>
             </Box>
         </Box>
