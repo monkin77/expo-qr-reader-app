@@ -1,9 +1,15 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
-import { QrReader } from "react-qr-reader";
+import QrScannerPlugin from "../Components/QrScannerPlugin";
 
 const QrReaderPage = () => {
     const [data, setData] = useState("No Result");
+
+    const onScanResult = (decodedText, decodedResult) => {
+        // handle scanned result
+        console.log(decodedText, decodedResult);
+        setData(decodedText);
+    };
 
     return (
         <Box>
@@ -21,7 +27,15 @@ const QrReaderPage = () => {
                 </Typography>
             </Box>
 
-            <QrReader
+            <QrScannerPlugin
+                fps={10}
+                qrbox={250}
+                aspectRatio={1}
+                disableFlip={false}
+                qrCodeSuccessCallback={onScanResult}
+            />
+
+            {/* <QrReader
                 onResult={(result, error) => {
                     if (!!result) {
                         setData(result?.text);
@@ -33,7 +47,7 @@ const QrReaderPage = () => {
                 }}
                 sx={{ width: "100%" }}
                 constraints={{ facingMode: "environment", aspectRatio: 1 }}
-            />
+            /> */}
 
             <Box
                 sx={{
