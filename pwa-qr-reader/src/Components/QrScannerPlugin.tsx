@@ -56,6 +56,25 @@ const QrScannerPlugin = (props: QrProps) => {
     
     useEffect(() => {
         if (!html5CustomScanner.current?.getState()) {
+            /**
+             * Check if the camera permission is granted. If not, request it.
+             */
+            const checkCameraPermissions = async () => {
+                if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
+                    // The necessary APIs are supported
+                    navigator.mediaDevices.getUserMedia({video: true}).then(stream => {
+                        console.log("Camera Permission Granted. stream: ", stream);
+                    }).catch(err => {
+                        console.log("User Denied permission to access the camera: ", err);
+                    });
+
+                  } else {
+                    // APIs are not supported, handle the error
+                  }
+
+            };
+            checkCameraPermissions();
+
             // when component mounts
             const config = createConfig(props);
             const verbose = props.verbose === true;
