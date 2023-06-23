@@ -4,7 +4,7 @@ import QrScannerPlugin from "../Components/QrScannerPlugin";
 
 const QrReaderPage = () => {
     const [data, setData] = useState("No Result");
-    const [hasPermission, setHasPermission] = useState(false);
+    const [hasPermission, setHasPermission] = useState(true);
 
     const onScanResult = (decodedText, decodedResult) => {
         // handle scanned result
@@ -12,8 +12,8 @@ const QrReaderPage = () => {
         setData(decodedText);
     };
 
-    const onPermGranted = () => {
-        setHasPermission(true);
+    const onPermRefused = () => {
+        setHasPermission(false);
     };
 
     return (
@@ -38,7 +38,7 @@ const QrReaderPage = () => {
                 aspectRatio={1}
                 disableFlip={false}
                 qrCodeSuccessCallback={onScanResult}
-                onPermGranted={onPermGranted}
+                onPermRefused={onPermRefused}
             />
 
             {/* <QrReader

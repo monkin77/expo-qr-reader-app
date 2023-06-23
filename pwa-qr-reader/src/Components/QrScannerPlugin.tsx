@@ -1,6 +1,6 @@
 // file = QrScannerPlugin.jsx
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 import { checkCameraPermissions } from "../utils/media";
 
 // Id of the HTML element used by the Html5QrcodeScanner.
@@ -15,7 +15,7 @@ interface QrProps {
     qrCodeErrorCallback?: (errorMessage: string, error: any) => void;
     verbose?: boolean;
     formatsToSupport?: Html5QrcodeSupportedFormats[];
-    onPermGranted: () => void;
+    onPermRefused: () => void;
 }
 
 // Creates the configuration object for Html5QrcodeScanner.
@@ -61,12 +61,13 @@ const QrScannerPlugin = (props: QrProps) => {
     useEffect(() => {
         const showQRCode = async () => {
             const hasCamPerm: boolean = await checkCameraPermissions();
-            if (!hasCamPerm) return;
-            
-            // Notify that the permission is granted
-            if (props.onPermGranted) {
-                props.onPermGranted();
-            }
+            if (!hasCamPerm) {
+                // Notify that the permission is refused
+                if (props.onPermRefused) {
+                    props.onPermRefused();
+                }
+                return;
+            };
 
             if (!html5CustomScanner.current?.getState()) {
                 // when component mounts
