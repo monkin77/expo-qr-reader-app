@@ -1,6 +1,7 @@
 // file = QrScannerPlugin.jsx
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import { MutableRefObject, useEffect, useRef } from "react";
+import { checkCameraPermissions } from "../utils/media";
 
 // Id of the HTML element used by the Html5QrcodeScanner.
 const qrcodeRegionId = "html5qr-code-full-region";
@@ -51,51 +52,38 @@ const createConfig = (props: QrProps) => {
     return config;
 };
 
-const QrScannerPlugin = (props: QrProps) => {    
-    const html5CustomScanner: MutableRefObject<Html5Qrcode | null> = useRef(null);
-    
+const QrScannerPlugin = (props: QrProps) => {
+    const html5CustomScanner: MutableRefObject<Html5Qrcode | null> =
+        useRef(null);
+
     useEffect(() => {
-        if (!html5CustomScanner.current?.getState()) {
-            /**
-             * Check if the camera permission is granted. If not, request it.
-             */
-            const checkCameraPermissions = async () => {
-                if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
-                    // The necessary APIs are supported
-                    navigator.mediaDevices.getUserMedia({video: true}).then(stream => {
-                        console.log("Camera Permission Granted. stream: ", stream);
-                    }).catch(err => {
-                        console.log("User Denied permission to access the camera: ", err);
-                    });
+        const showQRCode = async () => {
+            const hasCamPerm: boolean = await checkCameraPermissions();
+            if (!hasCamPerm) return; // TODO: Handle this case
 
-                  } else {
-                    // APIs are not supported, handle the error
-                  }
+            if (!html5CustomScanner.current?.getState()) {
+                // when component mounts
+                const config = createConfig(props);
+                const verbose = props.verbose === true;
+                // Suceess callback is required.
+                if (!props.qrCodeSuccessCallback) {
+                    throw new Error("qrCodeSuccessCallback is required."); // TODO: Check if we should throw an error
+                }
 
-            };
-            checkCameraPermissions();
-
-            // when component mounts
-            const config = createConfig(props);
-            const verbose = props.verbose === true;
-            // Suceess callback is required.
-            if (!props.qrCodeSuccessCallback) {
-                throw new Error("qrCodeSuccessCallback is required."); // TODO: Check if we should throw an error
+                html5CustomScanner.current = new Html5Qrcode(qrcodeRegionId, {
+                    ...config,
+                    verbose,
+                });
+                html5CustomScanner.current.start(
+                    { facingMode: "environment" },
+                    config,
+                    props.qrCodeSuccessCallback,
+                    props.qrCodeErrorCallback
+                );
             }
+        };
 
-            html5CustomScanner.current = new Html5Qrcode(qrcodeRegionId, {
-                ...config,
-                verbose,
-            });
-            console.log("rendering...");
-            html5CustomScanner.current.start(
-                { facingMode: "environment" }, config,
-                props.qrCodeSuccessCallback,
-                props.qrCodeErrorCallback
-            );
-        }
-
-        
+        showQRCode();
 
         // cleanup function when component will unmount
         return () => {
