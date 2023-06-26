@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import QrReader from "./pages/QrReader";
 import QrReader2 from "./pages/QrReader2";
+import QrReader3 from "./pages/QrReader3";
 
 const App = () => {
     return (
@@ -25,6 +26,8 @@ const App = () => {
                     <Route path="/qr-reader" element={<QrReader />} />
 
                     <Route path="/qr-reader2" element={<QrReader2 />} />
+
+                    <Route path="/qr-reader3" element={<QrReader3 />} />
                 </Routes>
             </BrowserRouter>
         </div>
