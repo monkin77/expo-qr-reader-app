@@ -12,6 +12,7 @@ interface WebcamStreamProps {
     audio?: boolean;
     mirrored?: boolean;
     videoConstraints?: MediaTrackConstraints;
+    fps?: number;
 }
 
 const WebcamStream = (props: WebcamStreamProps) => {
@@ -19,16 +20,15 @@ const WebcamStream = (props: WebcamStreamProps) => {
     const mediaRecorderRef: MutableRefObject<MediaRecorder | null> =
         useRef(null);
     const [capturing, setCapturing] = useState<boolean>(false);
-    const [recordedChunks, setRecordedChunks] = useState([]);
 
     const handleDataAvailable = useCallback(
         ({ data }: any) => {
             if (data?.size > 0) {
                 console.log("New data received: ", data);
-                setRecordedChunks((prev) => prev.concat(data));
+                
             }
         },
-        [setRecordedChunks]
+        []
     );
 
     const handleStartCapture = useCallback(async () => {
@@ -45,9 +45,10 @@ const WebcamStream = (props: WebcamStreamProps) => {
                 "dataavailable",
                 handleDataAvailable
             );
-            mediaRecorderRef.current.start();
+            const processingInterval : number = 1000 / (props.fps ?? 10);   // milliseconds between each interrupt
+            mediaRecorderRef.current.start(processingInterval);
         }
-    }, [setCapturing, mediaRecorderRef, handleDataAvailable, capturing]);
+    }, [setCapturing, mediaRecorderRef, handleDataAvailable, capturing, props.fps]);
 
     const handleStopCapture = useCallback(() => {
         mediaRecorderRef.current?.stop();
@@ -55,8 +56,9 @@ const WebcamStream = (props: WebcamStreamProps) => {
     }, [mediaRecorderRef, setCapturing]);
 
     useEffect(() => {
-        console.log("here");
+        // console.log("here");
         handleStartCapture();
+     
     }, [handleStartCapture]);
 
     return (
