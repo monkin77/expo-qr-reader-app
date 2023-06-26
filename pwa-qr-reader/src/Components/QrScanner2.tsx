@@ -3,6 +3,7 @@ import { MutableRefObject, useEffect, useRef } from "react";
 import QrScanner from "qr-scanner";
 import classes from "./QrScanner2.module.css";
 import { Box } from "@mui/material";
+import { checkCameraPermissions } from "../utils/media";
 
 // Id of the HTML element used by the QrScanner.
 const qrcodeRegionId = "qr-code-video-region";
@@ -13,17 +14,22 @@ interface QrProps {
     highlightScanRegion?: boolean;
     highlightCodeOutline?: boolean;
     onDecode: (result: QrScanner.ScanResult) => void;
+    onPermRefused: () => void;
 }
 
 // Creates the configuration object for Html5QrcodeScanner.
 const createConfig = (props: QrProps) => {
     // default config values
-    let config: QrProps = {
+    let config: {
+        preferredCamera?: string;
+        maxScansPerSecond?: number;
+        highlightScanRegion?: boolean;
+        highlightCodeOutline?: boolean;
+    } = {
         preferredCamera: "environment",
         maxScansPerSecond: 25,
         highlightScanRegion: true,
         highlightCodeOutline: false,
-        onDecode: (result) => console.log("decoded qr code:", result),
     };
 
     if (props.preferredCamera) {
@@ -38,9 +44,7 @@ const createConfig = (props: QrProps) => {
     if (props.highlightCodeOutline !== undefined) {
         config.highlightCodeOutline = props.highlightCodeOutline;
     }
-    if (props.onDecode) {
-        config.onDecode = props.onDecode;
-    }
+
     return config;
 };
 
@@ -51,22 +55,33 @@ const QrScannerPlugin = (props: QrProps) => {
         const videoElem = document.getElementById(
             qrcodeRegionId
         ) as HTMLVideoElement;
-        console.log("videoElem", videoElem);
+        // console.log("videoElem", videoElem);
 
         const showQRCode = async () => {
-            if (qrScanner.current != null) {
+            const hasCamPerm: boolean = await checkCameraPermissions();
+            if (!hasCamPerm) {
+                // Notify that the permission is refused
+                if (props.onPermRefused) {
+                    props.onPermRefused();
+                }
+                return;
+            };
+
+            // console.log("here")
+            const config = createConfig(props);
+
+            if (qrScanner.current !== null) {
                 return;
             }
-
-            console.log("here")
-            const config = createConfig(props);
 
             // To enforce the use of the new api with detailed scan results, call the constructor with an options object, see below.
             qrScanner.current = new QrScanner(
                 videoElem,
-                config.onDecode,
+                props.onDecode,
                 config
             );
+            
+            // console.log("here2");
 
             await qrScanner.current?.start();
         };

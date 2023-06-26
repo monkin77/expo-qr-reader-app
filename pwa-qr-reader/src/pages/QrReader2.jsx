@@ -37,6 +37,7 @@ const QrReaderPage2 = () => {
                 highlightScanRegion={true}
                 highlightCodeOutline={false}
                 onDecode={onScanResult2}
+                onPermRefused={onPermRefused}
             />
 
             <Box
