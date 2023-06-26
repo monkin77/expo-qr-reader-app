@@ -23,3 +23,29 @@ export const checkCameraPermissions: () => Promise<boolean> = async () => {
         return false;
     }
 };
+
+/**
+ * Check if the camera permission is granted. If not, request it.
+ * @returns true if permission was granted, false otherwise.
+ */
+export const getVideoStream: () => Promise<MediaStream | null> = async (facingMode: string = "environment") => {
+    if (
+        "mediaDevices" in navigator &&
+        "getUserMedia" in navigator.mediaDevices
+    ) {
+        // The necessary APIs are supported
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: facingMode
+                }
+            });
+            return stream;
+        } catch (err) {
+            return null;
+        }
+    } else {
+        // APIs are not supported, handle the error
+        return null;
+    }
+};
