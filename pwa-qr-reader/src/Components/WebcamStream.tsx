@@ -24,8 +24,10 @@ const WebcamStream = (props: WebcamStreamProps) => {
     const handleDataAvailable = useCallback(
         ({ data }: any) => {
             if (data?.size > 0) {
-                console.log("New data received: ", data);
-                
+                // Get screenshot data since the data received is a stream in the format video/webm
+                const screenshot = webcamRef.current?.getScreenshot();
+                console.log("screenshot: ", screenshot);
+                // TODO: use the screenshot to check for QR codes
             }
         },
         []
@@ -59,6 +61,17 @@ const WebcamStream = (props: WebcamStreamProps) => {
         // console.log("here");
         handleStartCapture();
      
+        // cleanup function when component will unmount
+        return () => {
+            const stopStream = async () => {
+                if (mediaRecorderRef.current) {
+                    mediaRecorderRef.current.stop();
+                    mediaRecorderRef.current = null;
+                }
+            };
+
+            stopStream();
+        };
     }, [handleStartCapture]);
 
     return (
@@ -67,6 +80,7 @@ const WebcamStream = (props: WebcamStreamProps) => {
             mirrored={false}
             videoConstraints={props.videoConstraints}
             ref={webcamRef}
+            screenshotFormat="image/png"    /* Lossless format */
         />
     );
 };
