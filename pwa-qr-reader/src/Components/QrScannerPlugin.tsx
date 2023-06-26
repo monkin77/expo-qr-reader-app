@@ -97,11 +97,8 @@ const QrScannerPlugin = (props: QrProps) => {
         return () => {
             const stopQrScanner = async () => {
                 if (html5CustomScanner.current?.isScanning) {
-                    console.log(1);
                     await html5CustomScanner.current.stop();
-                    console.log(2);
                     html5CustomScanner.current.clear();
-                    console.log(3);
                 }
             };
 
