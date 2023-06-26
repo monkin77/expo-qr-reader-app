@@ -2,7 +2,7 @@
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import { MutableRefObject, useEffect, useRef } from "react";
 import { checkCameraPermissions } from "../utils/media";
-import Webcam from "react-webcam";
+import WebcamStream from "./WebcamStream";
 
 // Id of the HTML element used by the Html5QrcodeScanner.
 const qrcodeRegionId = "html5qr-code-full-region";
@@ -57,7 +57,8 @@ const createConfig = (props: QrProps) => {
 const videoConstraints : MediaTrackConstraints = {
     facingMode: "environment",
     aspectRatio: 1,
-    frameRate: { ideal: 30, max: 45 },
+    frameRate: { ideal: 60, max: 60 },
+    /* TODO: Check for a way to make it occupy full width */
 };
 
 const QrScannerPlugin = (props: QrProps) => {
@@ -113,7 +114,7 @@ const QrScannerPlugin = (props: QrProps) => {
         };
     }, [props]);
 
-    return <Webcam audio={false} mirrored={false} videoConstraints={videoConstraints} />;
+    return <WebcamStream audio={false} mirrored={false} videoConstraints={videoConstraints} />;
 };
 
 export default QrScannerPlugin;
