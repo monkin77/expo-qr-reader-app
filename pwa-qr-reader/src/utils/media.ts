@@ -1,3 +1,5 @@
+import {fromPng} from "@rgba-image/png";
+
 /**
  * Check if the camera permission is granted. If not, request it.
  * @returns true if permission was granted, false otherwise.
@@ -49,3 +51,7 @@ export const getVideoStream: () => Promise<MediaStream | null> = async (facingMo
         return null;
     }
 };
+
+export const convertToRGBA = (pngData : Uint8Array) => {
+  return fromPng(pngData);
+}
